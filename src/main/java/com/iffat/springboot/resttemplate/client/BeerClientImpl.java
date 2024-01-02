@@ -36,7 +36,7 @@ public class BeerClientImpl implements BeerClient {
 //                JsonNode.class
 //        );
 
-        ResponseEntity<BeerDTOPageImpl> stringResponse = restTemplate.getForEntity(
+        ResponseEntity<BeerDTOPageImpl> response = restTemplate.getForEntity(
                 GET_BEER_PATH,
                 BeerDTOPageImpl.class
         );
@@ -46,8 +46,6 @@ public class BeerClientImpl implements BeerClient {
 //                    System.out.println(node.get("beerName").asText());
 //                });
 
-        System.out.println(stringResponse.getBody());
-
-        return null;
+        return response.getBody();
     }
 }
