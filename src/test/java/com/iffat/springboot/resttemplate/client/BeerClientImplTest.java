@@ -2,13 +2,11 @@ package com.iffat.springboot.resttemplate.client;
 
 import com.iffat.springboot.resttemplate.model.BeerDTO;
 import com.iffat.springboot.resttemplate.model.BeerStyle;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
 
 import java.math.BigDecimal;
 
@@ -34,7 +32,7 @@ class BeerClientImplTest {
 
         beerClient.deleteBeer(beerDto.getId());
 
-        assertThrows(HttpServerErrorException.class, () -> {
+        assertThrows(HttpClientErrorException.class, () -> {
             //should error
             beerClient.getBeerById(beerDto.getId());
         });

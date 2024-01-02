@@ -38,7 +38,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 @Import(RestTemplateBuilderConfig.class)
 public class BeerClientMockTest {
 
-    static final String URL = "http://api.springframework.guru";
+    static final String URL = "http://localhost:8080";
 
     @Autowired
     BeerClient beerClient;
