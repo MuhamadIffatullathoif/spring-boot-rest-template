@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -28,6 +29,7 @@ import java.util.Arrays;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
@@ -63,6 +65,19 @@ public class BeerClientMockTest {
         beerClient = new BeerClientImpl(mockRestTemplateBuilder);
         dto = getBeerDto();
         dtoJson = objectMapper.writeValueAsString(dto);
+    }
+
+    @Test
+    void testDeleteBeerNotFound() {
+        server.expect(method(HttpMethod.DELETE))
+                .andExpect(requestToUriTemplate(URL + BeerClientImpl.GET_BEER_BY_ID_PATH, dto.getId()))
+                .andRespond(withResourceNotFound());
+
+        assertThrows(HttpClientErrorException.class, () -> {
+            beerClient.deleteBeer(dto.getId());
+        });
+
+        server.verify();
     }
 
     @Test
@@ -110,7 +125,7 @@ public class BeerClientMockTest {
     }
 
     @Test
-    void testGetById(){
+    void testGetById() {
 
         mockGetOperation();
 
