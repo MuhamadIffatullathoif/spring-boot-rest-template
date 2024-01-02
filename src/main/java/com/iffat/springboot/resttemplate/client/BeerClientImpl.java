@@ -1,5 +1,6 @@
 package com.iffat.springboot.resttemplate.client;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.iffat.springboot.resttemplate.model.BeerDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -32,6 +33,15 @@ public class BeerClientImpl implements BeerClient {
                 BASE_URL + GET_BEER_PATH,
                 Map.class
         );
+        ResponseEntity<JsonNode> jsonResponse = restTemplate.getForEntity(
+                BASE_URL + GET_BEER_PATH,
+                JsonNode.class
+        );
+
+        jsonResponse.getBody().findPath("_embedded").findPath("beer")
+                .elements().forEachRemaining(node -> {
+                    System.out.println(node.get("beerName").asText());
+                });
 
         System.out.println(stringResponse.getBody());
 
