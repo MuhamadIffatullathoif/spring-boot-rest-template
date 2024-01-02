@@ -12,6 +12,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -96,4 +98,19 @@ public class BeerClientImpl implements BeerClient {
 
         return restTemplate.getForObject(uri.getPath(), BeerDTO.class);
     }
+
+    @Override
+    public BeerDTO updateBeer(BeerDTO beerDTO) {
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        restTemplate.put(GET_BEER_BY_ID_PATH, beerDTO, beerDTO.getId());
+        return getBeerById(beerDTO.getId());
+    }
+
+    @Override
+    public void deleteBeer(UUID beerId) {
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        restTemplate.delete(GET_BEER_BY_ID_PATH, beerId);
+    }
+
+
 }
