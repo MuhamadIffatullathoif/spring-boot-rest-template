@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 
 import static java.util.Objects.isNull;
 
@@ -23,12 +24,12 @@ import static java.util.Objects.isNull;
 public class OAuthClientInterceptor implements ClientHttpRequestInterceptor {
 
     private final OAuth2AuthorizedClientManager manager;
-    private final Authentication authentication;
+    private final Authentication principal;
     private final ClientRegistration clientRegistration;
 
     public OAuthClientInterceptor(OAuth2AuthorizedClientManager manager, ClientRegistrationRepository clientRegistrationRepository) {
         this.manager = manager;
-        this.authentication = createPrincipal();
+        this.principal = createPrincipal();
         this.clientRegistration = clientRegistrationRepository.findByRegistrationId("springauth");
     }
 
@@ -54,7 +55,7 @@ public class OAuthClientInterceptor implements ClientHttpRequestInterceptor {
         return new Authentication() {
             @Override
             public Collection<? extends GrantedAuthority> getAuthorities() {
-                return null;
+                return Collections.emptySet();
             }
 
             @Override
@@ -84,7 +85,7 @@ public class OAuthClientInterceptor implements ClientHttpRequestInterceptor {
 
             @Override
             public String getName() {
-                return null;
+                return clientRegistration.getClientId();
             }
         };
     }

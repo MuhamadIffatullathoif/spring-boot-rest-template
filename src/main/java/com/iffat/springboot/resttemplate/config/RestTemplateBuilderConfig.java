@@ -1,5 +1,6 @@
 package com.iffat.springboot.resttemplate.config;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.client.RestTemplateBuilderConfigurer;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -33,7 +34,8 @@ public class RestTemplateBuilderConfig {
 //    }
 
     @Bean
-    OAuth2AuthorizedClientManager auth2AuthorizedClientManager(ClientRegistrationRepository clientRegistrationRepository, OAuth2AuthorizedClientService oAuth2AuthorizedClientService) {
+    OAuth2AuthorizedClientManager auth2AuthorizedClientManager(ClientRegistrationRepository clientRegistrationRepository,
+                                                               OAuth2AuthorizedClientService oAuth2AuthorizedClientService) {
         var authorizedClientProvider = OAuth2AuthorizedClientProviderBuilder.builder()
                 .clientCredentials()
                 .build();
