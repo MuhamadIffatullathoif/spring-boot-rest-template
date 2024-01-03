@@ -12,12 +12,14 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Collection;
 
 import static java.util.Objects.isNull;
 
+@Component
 public class OAuthClientInterceptor implements ClientHttpRequestInterceptor {
 
     private final OAuth2AuthorizedClientManager manager;
@@ -33,7 +35,7 @@ public class OAuthClientInterceptor implements ClientHttpRequestInterceptor {
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
         OAuth2AuthorizeRequest oAuth2AuthorizeRequest = OAuth2AuthorizeRequest
-                .withClientRegistrationId(clientRegistration.getClientId())
+                .withClientRegistrationId(clientRegistration.getRegistrationId())
                 .principal(createPrincipal())
                 .build();
 
